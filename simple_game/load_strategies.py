@@ -4,6 +4,9 @@ import pickle
 import json
 import argparse
 import pandas as pd
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 150)
 
 def process_policy(policy, infoset, reach, distribution):
     player, card, history = infoset.split("-")
@@ -58,7 +61,7 @@ def load_policies(filename):
 
     return policies
 
-def print_policy_table(policy):
+def print_policy_table(policy, do_print=True):
     # Get max c1 and c2
     maxcards = [0, 0]
     for (player, card, history), p in policy.items():
@@ -95,8 +98,9 @@ def print_policy_table(policy):
 
             this_table[c2] = history[1:] + " (" + str(reward) + ")"
         table.append(this_table)
-
-    print(pd.DataFrame(table))
+    if do_print:
+      print(pd.DataFrame(table))
+    return pd.DataFrame(table)
 
 def compare_dict(v1, v2):
     s = []
